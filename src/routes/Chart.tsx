@@ -24,12 +24,66 @@ function Chart({ coinId }: ChartProps) {
 	const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
 		fetchCoinHistory(coinId)
 	);
+
+	console.log(data);
 	return (
 		<div>
 			{isLoading ? (
 				"Loading chart..."
 			) : (
 				<>
+					<ApexChart
+						type="candlestick"
+						series={[
+							{
+								data: data?.map((one) => [
+									new Date(one.time_close),
+									one.open,
+									one.high,
+									one.low,
+									one.close,
+								]) as number[][],
+							},
+						]}
+						options={{
+							theme: {
+								mode: isDark ? "dark" : "light",
+							},
+							chart: {
+								type: "candlestick",
+								height: 300,
+								width: 500,
+								toolbar: {
+									show: false,
+								},
+								background: "transparent",
+							},
+							stroke: {
+								curve: "smooth",
+								width: 2,
+							},
+							yaxis: {
+								show: false,
+							},
+							xaxis: {
+								type: "datetime",
+								categories: data?.map((one) => one.time_close),
+								labels: {
+									style: {
+										colors: "#f19e2a",
+									},
+								},
+							},
+							plotOptions: {
+								candlestick: {
+									colors: {
+										upward: "#f1662a",
+										downward: "#4686df",
+									},
+								},
+							},
+						}}
+					/>
 					<ApexChart
 						type="line"
 						series={[
