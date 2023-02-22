@@ -216,7 +216,7 @@ function Coin({}: ICoinProps) {
 				</title>
 			</Helmet>
 			<Header>
-				<BackBtn href="../">
+				<BackBtn href={`${process.env.PUBLIC_URL}`}>
 					BACK
 				</BackBtn>
 				<Title>
