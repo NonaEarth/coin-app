@@ -105,6 +105,7 @@ function Coins({}: ICoinsProps) {
 	// 		setLoading(false);
 	// 	})();
 	// }, []);
+
 	return (
 		<Container>
 			<Helmet>
@@ -119,7 +120,7 @@ function Coins({}: ICoinsProps) {
 			) : (
 				<CoinsList>
 					{data?.slice(0, 100).map((coin) => (
-						<Coin key={coin.id}>
+						<Coin key={`../`}>
 							<Link
 								to={{
 									pathname: `/${coin.id}`,

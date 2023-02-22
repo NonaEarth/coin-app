@@ -13,7 +13,6 @@
     "@types/react-query": "^1.2.9",
     "@types/styled-components": "^5.1.26",
     "apexcharts": "^3.36.3",
-    "dotenv": "^16.0.3",
     "gh-pages": "^5.0.0",
     "query": "^0.2.0",
     "react": "^18.2.0",
