@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
-import ApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "../atoms";
+import styled from "styled-components";
 
 interface IHistorical {
 	time_open: string;
@@ -19,71 +19,74 @@ interface ChartProps {
 	coinId: string;
 }
 
+const PriceBox = styled.div`
+	background-color: ${(props) => props.theme.boxColor};
+	width: 100%;
+	height: 150px;
+	border-radius: 20px;
+`;
+
+const UList = styled.ul`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+`;
+
+const Li = styled.li`
+	font-size: 17px;
+	font-weight: 600;
+
+	&:last-child {
+		color: ${(props) => props.theme.accentColor};
+		font-weight: 800;
+	}
+`;
+
 function Price({ coinId }: ChartProps) {
-	const isDark = useRecoilValue(isDarkAtom);
-	const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
+	const { isLoading, data } = useQuery<IHistorical[]>([coinId], () =>
 		fetchCoinHistory(coinId)
 	);
 
-    console.log(data);
+	const databox = (() => {
+		let returnValue: IHistorical[] = [];
+		if (data) {
+			for (let index = 0; index < data.length; index++) {
+				if (index < 4) {
+					returnValue.push(data[index]);
+				}
+			}
+		}
+
+		return returnValue;
+	})();
+
+	console.log(databox);
+
 	return (
 		<div>
 			{isLoading ? (
-				"Loading chart..."
+				"Loading price..."
 			) : (
 				<>
-					<ApexChart
-						type="candlestick"
-						series={[
-							{
-								data: data?.map((one) => [
-									new Date(one.time_close),
-									one.open,
-									one.high,
-									one.low,
-									one.close,
-								]) as number[][],
-							},
-						]}
-						options={{
-							theme: {
-								mode: isDark ? "dark" : "light",
-							},
-							chart: {
-								type: "candlestick",
-								height: 300,
-								width: 500,
-								toolbar: {
-									show: false,
-								},
-								background: "transparent",
-							},
-							stroke: {
-								curve: "smooth",
-								width: 2,
-							},
-							yaxis: {
-								show: false,
-							},
-							xaxis: {
-								type: "datetime",
-								categories: data?.map((one) => one.time_close),
-								labels: {
-									style: {
-										colors: "#f19e2a",
-									},
-								},
-							},
-							plotOptions: {
-								candlestick: {
-									colors: {
-										upward: "#f1662a",
-										downward: "#4686df",
-									},
-								},
-							},
-						}}
-					/>
+					<PriceBox>
+						<UList>
+							{databox &&
+								databox.map((one) => (
+									<>
+										<Li>
+											<span>
+												{new Date(Number(one.time_close)).toLocaleTimeString()}
+											</span>
+											<span>{one.high}$</span>
+										</Li>
+									</>
+								))}
+						</UList>
+					</PriceBox>
 				</>
 			)}
 		</div>

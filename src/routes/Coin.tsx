@@ -8,11 +8,11 @@ import {
 	useRouteMatch,
 } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Price from "./Price";
 import Chart from "./Chart";
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import Price from "./Price";
 
 const Container = styled.div`
 	padding: 0px 20px;
@@ -224,7 +224,7 @@ function Coin({}: ICoinProps) {
 						? state.name.toUpperCase()
 						: loading
 						? "Loading"
-						: infoData?.name}
+						: infoData?.name.toUpperCase()}
 				</Title>
 			</Header>
 			{loading ? (
