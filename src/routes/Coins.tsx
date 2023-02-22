@@ -120,7 +120,7 @@ function Coins({}: ICoinsProps) {
 			) : (
 				<CoinsList>
 					{data?.slice(0, 100).map((coin) => (
-						<Coin key={`../`}>
+						<Coin key={coin.id}>
 							<Link
 								to={{
 									pathname: `/${coin.id}`,
