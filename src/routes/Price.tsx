@@ -37,9 +37,12 @@ const UList = styled.ul`
 `;
 
 const Li = styled.li`
+width: 60%;
 	font-size: 17px;
 	font-weight: 600;
-
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 	&:last-child {
 		color: ${(props) => props.theme.accentColor};
 		font-weight: 800;
